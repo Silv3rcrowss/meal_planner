@@ -1,0 +1,603 @@
+swagger: "2.0"
+info:
+  title: Meal Planner API
+  description: "This API allows users to plan meals, track calorie intake, and generate grocery lists through AI integration. It offers personalized meal suggestions, a recipe library, nutrition tracking, grocery list generation, and support for dietary restrictions."
+  version: "1.0"
+
+host: "localhost"
+basePath: "/"
+
+schemes:
+  - "http"
+
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+paths:
+  /meals:
+    post:
+      tags:
+        - Meals
+      summary: "Create a new meal"
+      parameters:
+        - in: "body"
+          name: "meal_data"
+          description: "Data for the new meal"
+          schema:
+            $ref: "#/definitions/Meal"
+      responses:
+        201:
+          description: "Meal created"
+          schema:
+            $ref: "#/definitions/Meal"
+    get:
+      tags:
+        - Meals
+      summary: "Get all meals"
+      responses:
+        200:
+          description: "List of meals"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Meal"
+  /meals/{meal_id}:
+    get:
+      tags:
+        - Meals
+      summary: "Get meal by ID"
+      parameters:
+        - in: "path"
+          name: "meal_id"
+          type: "integer"
+          required: true
+      responses:
+        200:
+          description: "Meal found"
+          schema:
+            $ref: "#/definitions/Meal"
+        404:
+          description: "Meal not found"
+    put:
+      tags:
+        - Meals
+      summary: "Update meal by ID"
+      parameters:
+        - in: "path"
+          name: "meal_id"
+          type: "integer"
+          required: true
+        - in: "body"
+          name: "meal_data"
+          description: "Data for updating the meal"
+          schema:
+            $ref: "#/definitions/Meal"
+      responses:
+        200:
+          description: "Meal updated"
+          schema:
+            $ref: "#/definitions/Meal"
+        404:
+          description: "Meal not found"
+    delete:
+      tags:
+        - Meals
+      summary: "Delete meal by ID"
+      parameters:
+        - in: "path"
+          name: "meal_id"
+          type: "integer"
+          required: true
+      responses:
+        200:
+          description: "Meal deleted"
+        404:
+          description: "Meal not found"
+
+  /users:
+    post:
+      tags:
+        - Users
+      summary: "Create a new user"
+      parameters:
+        - in: "body"
+          name: "user_data"
+          description: "Data for the new user"
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        201:
+          description: "User created"
+          schema:
+            $ref: "#/definitions/User"
+        400:
+          description: "Username or email already exists"
+    get:
+      tags:
+        - Users
+      summary: "Get all users"
+      responses:
+        200:
+          description: "List of users"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+  /users/{user_id}:
+    get:
+      tags:
+        - Users
+      summary: "Get user by ID"
+      parameters:
+        - in: "path"
+          name: "user_id"
+          type: "integer"
+          required: true
+      responses:
+        200:
+          description: "User found"
+          schema:
+            $ref: "#/definitions/User"
+        404:
+          description: "User not found"
+    put:
+      tags:
+        - Users
+      summary: "Update user by ID"
+      parameters:
+        - in: "path"
+          name: "user_id"
+          type: "integer"
+          required: true
+        - in: "body"
+          name: "user_data"
+          description: "Data for updating the user"
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        200:
+          description: "User updated"
+          schema:
+            $ref: "#/definitions/User"
+        404:
+          description: "User not found"
+    delete:
+      tags:
+        - Users
+      summary: "Delete user by ID"
+      parameters:
+        - in: "path"
+          name: "user_id"
+          type: "integer"
+          required: true
+      responses:
+        200:
+          description: "User deleted"
+        404:
+          description: "User not found"
+  /grocery-lists:
+    post:
+      tags:
+        - "Grocery Lists"
+      summary: "Create a new grocery list"
+      parameters:
+        - in: "body"
+          name: "grocery_list_data"
+          description: "Data for the new grocery list"
+          schema:
+            $ref: "#/definitions/GroceryList"
+      responses:
+        201:
+          description: "Grocery list created"
+          schema:
+            $ref: "#/definitions/GroceryList"
+    get:
+      tags:
+        - "Grocery Lists"
+      summary: "Get all grocery lists"
+      responses:
+        200:
+          description: "List of grocery lists"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/GroceryList"
+  /grocery-lists/{grocery_list_id}:
+    get:
+      tags:
+        - "Grocery Lists"
+      summary: "Get grocery list by ID"
+      parameters:
+        - in: "path"
+          name: "grocery_list_id"
+          type: "integer"
+          required: true
+      responses:
+        200:
+          description: "Grocery list found"
+          schema:
+            $ref: "#/definitions/GroceryList"
+        404:
+          description: "Grocery list not found"
+    put:
+      tags:
+        - "Grocery Lists"
+      summary: "Update grocery list by ID"
+      parameters:
+        - in: "path"
+          name: "grocery_list_id"
+          type: "integer"
+          required: true
+        - in: "body"
+          name: "grocery_list_data"
+          description: "Data for updating the grocery list"
+          schema:
+            $ref: "#/definitions/GroceryList"
+      responses:
+        200:
+          description: "Grocery list updated"
+          schema:
+            $ref: "#/definitions/GroceryList"
+        404:
+          description: "Grocery list not found"
+    delete:
+      tags:
+        - "Grocery Lists"
+      summary: "Delete grocery list by ID"
+      parameters:
+        - in: "path"
+          name: "grocery_list_id"
+          type: "integer"
+          required: true
+      responses:
+        200:
+          description: "Grocery list deleted"
+        404:
+          description: "Grocery list not found"
+
+  /grocery-list-items:
+    post:
+      tags:
+        - "Grocery List Items"
+      summary: "Create a new grocery list item"
+      parameters:
+        - in: "body"
+          name: "item_data"
+          description: "Data for the new grocery list item"
+          schema:
+            $ref: "#/definitions/GroceryListItem"
+      responses:
+        201:
+          description: "Grocery list item created"
+          schema:
+            $ref: "#/definitions/GroceryListItem"
+        400:
+          description: "Item already exists in grocery list"
+    get:
+      tags:
+        - "Grocery List Items"
+      summary: "Get all grocery list items"
+      responses:
+        200:
+          description: "List of grocery list items"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/GroceryListItem"
+
+  /grocery-list-items/{item_id}:
+    get:
+      tags:
+        - "Grocery List Items"
+      summary: "Get grocery list item by ID"
+      parameters:
+        - in: "path"
+          name: "item_id"
+          type: "integer"
+          required: true
+      responses:
+        200:
+          description: "Grocery list item found"
+          schema:
+            $ref: "#/definitions/GroceryListItem"
+        404:
+          description: "Item not found"
+    put:
+      tags:
+        - "Grocery List Items"
+      summary: "Update grocery list item by ID"
+      parameters:
+        - in: "path"
+          name: "item_id"
+          type: "integer"
+          required: true
+        - in: "body"
+          name: "item_data"
+          description: "Data for updating the grocery list item"
+          schema:
+            $ref: "#/definitions/GroceryListItem"
+      responses:
+        200:
+          description: "Grocery list item updated"
+          schema:
+            $ref: "#/definitions/GroceryListItem"
+        404:
+          description: "Item not found"
+    delete:
+      tags:
+        - "Grocery List Items"
+      summary: "Delete grocery list item by ID"
+      parameters:
+        - in: "path"
+          name: "item_id"
+          type: "integer"
+          required: true
+      responses:
+        200:
+          description: "Item deleted"
+        404:
+          description: "Item not found"
+
+  /meal-plans:
+    post:
+      tags:
+        - "Meal Plans"
+      summary: "Create a new meal plan"
+      parameters:
+        - in: "body"
+          name: "meal_plan_data"
+          description: "Data for the new meal plan"
+          schema:
+            $ref: "#/definitions/MealPlan"
+      responses:
+        201:
+          description: "Meal plan created"
+          schema:
+            $ref: "#/definitions/MealPlan"
+    get:
+      tags:
+        - "Meal Plans"
+      summary: "Get AI-generated meal plan"
+      responses:
+        200:
+          description: "AI-generated meal plan"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/MealPlan"
+
+  /meal-plans/{meal_plan_id}:
+    put:
+      tags:
+        - "Meal Plans"
+      summary: "Update meal plan by ID"
+      parameters:
+        - in: "path"
+          name: "meal_plan_id"
+          type: "integer"
+          required: true
+        - in: "body"
+          name: "meal_plan_data"
+          description: "Data for updating the meal plan"
+          schema:
+            $ref: "#/definitions/MealPlan"
+      responses:
+        200:
+          description: "Meal plan updated"
+          schema:
+            $ref: "#/definitions/MealPlan"
+        404:
+          description: "Meal plan not found"
+    delete:
+      tags:
+        - "Meal Plans"
+      summary: "Delete meal plan by ID"
+      parameters:
+        - in: "path"
+          name: "meal_plan_id"
+          type: "integer"
+          required: true
+      responses:
+        200:
+          description: "Meal plan deleted"
+        404:
+          description: "Meal plan not found"
+
+  /recipes:
+    post:
+      tags:
+        - "Recipes"
+      summary: "Create a new recipe"
+      parameters:
+        - in: "body"
+          name: "recipe_data"
+          description: "Data for the new recipe"
+          schema:
+            $ref: "#/definitions/Recipe"
+      responses:
+        201:
+          description: "Recipe created"
+          schema:
+            $ref: "#/definitions/Recipe"
+    get:
+      tags:
+        - "Recipes"
+      summary: "Get all recipes"
+      responses:
+        200:
+          description: "List of recipes"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Recipe"
+  /recipes/{recipe_id}:
+    get:
+      tags:
+        - "Recipes"
+      summary: "Get recipe by ID"
+      parameters:
+        - in: "path"
+          name: "recipe_id"
+          type: "integer"
+          required: true
+      responses:
+        200:
+          description: "Recipe found"
+          schema:
+            $ref: "#/definitions/Recipe"
+        404:
+          description: "Recipe not found"
+    put:
+      tags:
+        - "Recipes"
+      summary: "Update recipe by ID"
+      parameters:
+        - in: "path"
+          name: "recipe_id"
+          type: "integer"
+          required: true
+        - in: "body"
+          name: "recipe_data"
+          description: "Data for updating the recipe"
+          schema:
+            $ref: "#/definitions/Recipe"
+      responses:
+        200:
+          description: "Recipe updated"
+          schema:
+            $ref: "#/definitions/Recipe"
+        404:
+          description: "Recipe not found"
+    delete:
+      tags:
+        - "Recipes"
+      summary: "Delete recipe by ID"
+      parameters:
+        - in: "path"
+          name: "recipe_id"
+          type: "integer"
+          required: true
+      responses:
+        200:
+          description: "Recipe deleted"
+        404:
+          description: "Recipe not found"
+
+definitions:
+  Meal:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      name:
+        type: "string"
+      description:
+        type: "string"
+      calories:
+        type: "integer"
+      ingredients:
+        type: "array"
+        items:
+          type: "string"
+
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      username:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      bmi:
+        type: "number"
+
+  GroceryList:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      user_id:
+        type: "integer"
+      name:
+        type: "string"
+
+  GroceryListItem:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      grocery_list_id:
+        type: "integer"
+      name:
+        type: "string"
+      quantity:
+        type: "integer"
+      unit:
+        type: "string"
+
+  MealPlan:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      user_id:
+        type: "integer"
+      start_date:
+        type: "string"
+      end_date:
+        type: "string"
+      meals:
+        type: "array"
+        items:
+          $ref: "#/definitions/Meal"
+  Recipe:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      name:
+        type: "string"
+      description:
+        type: "string"
+      instructions:
+        type: "string"
+      ingredients:
+        type: "array"
+        items:
+          type: "string"
+      calories:
+        type: "integer"
+      servings:
+        type: "integer"
+      RecipeIngredient:
+        type: "object"
+        properties:
+          id:
+            type: "integer"
+          recipe_id:
+            type: "integer"
+          name:
+            type: "string"
+          quantity:
+            type: "integer"
+          unit:
+            type: "string"
+
+tags:
+  - name: "Meals"
+    description: "Operations with Meals"
+  - name: "Users"
+    description: "Operations with Users"
+  - name: "Grocery Lists"
+    description: "Operations with Grocery Lists"
+  - name: "Grocery List Items"
+    description: "Operations with Grocery List Items"
+  - name: "Meal Plans"
+    description: "Operations with Meal Plans"
+  - name: "Recipes"
+    description: "Operations with Recipes"
